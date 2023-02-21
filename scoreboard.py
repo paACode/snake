@@ -1,4 +1,5 @@
 import turtle
+from main import SCREEN_SIZE_XY_PX
 
 FONT_TYPE = "Arial"
 FONT_SIZE = 20
@@ -7,24 +8,44 @@ FONT_STYLE = "normal"
 
 class Scoreboard(turtle.Turtle):
 
-    def __init__(self, screensize, color):
+    def __init__(self, color):
         super().__init__()
         self.score = 0
+        self.highscore = 0
         self.penup()
         self.color(color)
         self.hideturtle()
-        self.x_position = 0
-        self.y_position = screensize / 2 - 2 * FONT_SIZE
-        self.goto(self.x_position, self.y_position)
-        self.update_score()
+        self.update()
 
-    def update_score(self):
+    def update(self):
         self.clear()
-        self.write(arg=f"Scoreboard:{self.score}", align="center", font=(FONT_STYLE, FONT_SIZE, FONT_STYLE))
+        self.write_score()
+        self.write_highscore()
+
+
+
+    def write_score(self):
+        x_position = 0
+        y_position = SCREEN_SIZE_XY_PX / 2 - 2 * FONT_SIZE
+        self.goto(x_position, y_position)
+        self.write(arg=f"Score:{self.score}", align="center", font=(FONT_STYLE, FONT_SIZE, FONT_STYLE))
+
+    def write_highscore(self):
+        x_position = 0
+        y_position = SCREEN_SIZE_XY_PX / 2 - 3 * FONT_SIZE
+        self.goto(x_position, y_position)
+        self.write(arg=f"Highscore:{self.highscore}", align="center", font=(FONT_STYLE, round(FONT_SIZE / 2), FONT_STYLE))
 
     def increase_score(self):
         self.score += 1
 
+    def update_highscore(self):
+        if self.score > self.highscore:
+            self.highscore = self.score
+
     def game_over(self):
         self.goto(0, 0)
         self.write(arg=f"Game Over!", align="center", font=(FONT_STYLE, FONT_SIZE * 2, FONT_STYLE))
+
+    def reset_score(self):
+        self.score = 0

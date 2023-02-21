@@ -10,18 +10,25 @@ class Snake:
     RIGHT = 0
 
     def __init__(self, nr_of_body_elements, shape, body_element_size_px, body_color):
+        self.default_nr_of_body_elements = nr_of_body_elements
+        self.default_shape = shape
+        self.default_body_element_size_px = body_element_size_px
+        self.default_body_color = body_color
         self.body = []
-        for index in range(nr_of_body_elements):  # Create Snake
-            body_element = turtle.Turtle(shape)
-            body_element.penup()
-            body_element.color(body_color)
-            self.set_body_size(body_element_size_px, body_element)
-            body_element.setposition(x=-body_element_size_px * index, y=0)
-            self.body.append(body_element)
+        self.create_default_body()
         self.step_size = None
         self.set_step_size()
         self.head = self.body[0]
         self.tail = self.body[len(self.body) - 1]
+
+    def create_default_body(self):
+        for index in range(self.default_nr_of_body_elements):  # Create Snake
+            body_element = turtle.Turtle(self.default_shape)
+            body_element.penup()
+            body_element.color(self.default_body_color)
+            self.set_body_size(self.default_body_element_size_px, body_element)
+            body_element.setposition(x=-self.default_body_element_size_px * index, y=0)
+            self.body.append(body_element)
 
     def set_body_size(self, bdy_element_size_px, bdy_element):
         factor_x, factor_y, factor_outline = self.get_stretch_factors(size_px=bdy_element_size_px)
@@ -89,3 +96,10 @@ class Snake:
         self.set_body_size(tail_element_size_px, new_tail_element)
         new_tail_element.setposition(x=latest_tail_x_cor, y=latest_tail_y_cor)
         self.body.append(new_tail_element)
+
+    def reset(self):
+        self.body.clear()
+        self.create_default_body()
+        self.head = self.body[0]
+        self.tail = self.body[len(self.body) - 1]
+
