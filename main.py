@@ -58,7 +58,7 @@ def snake_collision_detected():
 if __name__ == '__main__':
     snake_screen = create_snake_screen(background_color=BACKGROUND_COLOR, size_px=SCREEN_SIZE_XY_PX)
     a_snake = snake.Snake(nr_of_body_elements=SNAKE_NR_OF_BODY_ELEMENTS, shape=SNAKE_BODY_SHAPE,
-                        body_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX, body_color=SNAKE_BODY_COLOR)
+                          body_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX, body_color=SNAKE_BODY_COLOR)
     food = food.Food(grid_step_px=a_snake.get_body_size(), window_size_px=SCREEN_SIZE_XY_PX, color=FOOD_COLOR)
     scoreboard = scoreboard.Scoreboard(color=SCOREBOARD_COLOR)
     initialize_controls()
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         snake_screen.update()
         if grow_snake_next_update is True:
             a_snake.add_body_element_to_tail(shape=SNAKE_BODY_SHAPE, tail_color=SNAKE_BODY_COLOR,
-                                           tail_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX)
+                                             tail_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX)
             grow_snake_next_update = False
         scoreboard.update()
         time.sleep(0.075)
@@ -85,6 +85,7 @@ if __name__ == '__main__':
             scoreboard.reset_score()
             scoreboard.update()
             a_snake.reset()
+
         elif food_caught():
             scoreboard.increase_score()
             food.refresh_random_coordinate()

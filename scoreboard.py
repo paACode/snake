@@ -22,8 +22,6 @@ class Scoreboard(turtle.Turtle):
         self.write_score()
         self.write_highscore()
 
-
-
     def write_score(self):
         x_position = 0
         y_position = SCREEN_SIZE_XY_PX / 2 - 2 * FONT_SIZE
@@ -34,7 +32,8 @@ class Scoreboard(turtle.Turtle):
         x_position = 0
         y_position = SCREEN_SIZE_XY_PX / 2 - 3 * FONT_SIZE
         self.goto(x_position, y_position)
-        self.write(arg=f"Highscore:{self.highscore}", align="center", font=(FONT_STYLE, round(FONT_SIZE / 2), FONT_STYLE))
+        self.write(arg=f"Highscore:{self.highscore}", align="center",
+                   font=(FONT_STYLE, round(FONT_SIZE / 2), FONT_STYLE))
 
     def increase_score(self):
         self.score += 1

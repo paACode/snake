@@ -98,8 +98,9 @@ class Snake:
         self.body.append(new_tail_element)
 
     def reset(self):
-        self.body.clear()
+        for element in self.body:  # Makes sure turtles of old snake are not visible anymore
+            element.reset()
+        self.body.clear()  # Delete old snake
         self.create_default_body()
         self.head = self.body[0]
         self.tail = self.body[len(self.body) - 1]
-
