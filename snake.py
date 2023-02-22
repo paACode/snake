@@ -20,6 +20,7 @@ class Snake:
         self.set_step_size()
         self.head = self.body[0]
         self.tail = self.body[len(self.body) - 1]
+        self.visible = True
 
     def create_default_body(self):
         for index in range(self.default_nr_of_body_elements):  # Create Snake
@@ -104,3 +105,18 @@ class Snake:
         self.create_default_body()
         self.head = self.body[0]
         self.tail = self.body[len(self.body) - 1]
+
+    def toggle_visibility(self, ):
+        if self.visible:
+            self.hide_body()
+            self.visible = False
+        else:
+            self.show_body()
+            self.visible = True
+
+    def hide_body(self):
+        for element in self.body:
+            element.hideturtle()
+    def show_body(self):
+        for element in self.body:
+            element.showturtle()

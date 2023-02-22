@@ -12,6 +12,8 @@ SNAKE_NR_OF_BODY_ELEMENTS = 3
 SNAKE_BODY_COLOR = "white"
 FOOD_COLOR = "magenta"
 SCOREBOARD_COLOR = "white"
+SCREEN_REFRESH_TIME_S = 0.075
+TRANSPARENCY_TRIGGER_TIME_S = 0.01
 
 
 def create_snake_screen(background_color, size_px):
@@ -54,6 +56,13 @@ def snake_collision_detected():
             return True
     return False
 
+def screen_refresh_needed(refresh_time_s=SCREEN_REFRESH_TIME_S):
+    if current_time - screen_refresh_start_time > refresh_time_s:
+        return True
+    return False
+
+
+
 
 if __name__ == '__main__':
     snake_screen = create_snake_screen(background_color=BACKGROUND_COLOR, size_px=SCREEN_SIZE_XY_PX)
@@ -64,32 +73,39 @@ if __name__ == '__main__':
     initialize_controls()
     game_is_on = True
     grow_snake_next_update = False
+    screen_refresh_start_time = time.time()
     while game_is_on:
-        snake_screen.update()
-        if grow_snake_next_update is True:
-            a_snake.add_body_element_to_tail(shape=SNAKE_BODY_SHAPE, tail_color=SNAKE_BODY_COLOR,
-                                             tail_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX)
-            grow_snake_next_update = False
-        scoreboard.update()
-        time.sleep(0.075)
-        a_snake.move()
+        current_time = time.time()
+        if screen_refresh_needed(refresh_time_s=TRANSPARENCY_TRIGGER_TIME_S):
+            a_snake.toggle_visibility()
 
-        if collision_with_wall():
-            scoreboard.update_highscore()
-            scoreboard.reset_score()
+        if screen_refresh_needed(refresh_time_s=SCREEN_REFRESH_TIME_S):
+            screen_refresh_start_time = current_time
+            snake_screen.update()
+            if grow_snake_next_update is True:
+                a_snake.add_body_element_to_tail(shape=SNAKE_BODY_SHAPE, tail_color=SNAKE_BODY_COLOR,
+                                                 tail_element_size_px=SNAKE_BODY_ELEMENT_SIZE_PX)
+                grow_snake_next_update = False
             scoreboard.update()
-            a_snake.reset()
+            a_snake.move()
 
-        elif snake_collision_detected():
-            scoreboard.update_highscore()
-            scoreboard.reset_score()
-            scoreboard.update()
-            a_snake.reset()
+            if collision_with_wall():
+                scoreboard.update_highscore()
+                scoreboard.reset_score()
+                scoreboard.update()
+                a_snake.reset()
 
-        elif food_caught():
-            scoreboard.increase_score()
-            food.refresh_random_coordinate()
-            grow_snake_next_update = True
+            elif snake_collision_detected():
+                scoreboard.update_highscore()
+                scoreboard.reset_score()
+                scoreboard.update()
+                a_snake.reset()
 
-    snake_screen.update()  # Necessary because latest Screen-Image looks like Snake did not collide with wall!
+            elif food_caught():
+                scoreboard.increase_score()
+                food.refresh_random_coordinate()
+                grow_snake_next_update = True
+
+
+        snake_screen.update()  # Necessary because latest Screen-Image looks like Snake did not collide with wall!
     snake_screen.exitonclick()
