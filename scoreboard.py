@@ -41,7 +41,7 @@ class Scoreboard(turtle.Turtle):
 
     def update_highscore(self):
         if self.score > self.highscore:
-            with open("data.txt", mode= "w") as datafile:
+            with open("data.txt", mode="w") as datafile:
                 datafile.write(str(self.score))
             self.highscore = int(self.score)
 
